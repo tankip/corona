@@ -4,7 +4,6 @@
       <div class="container">
         <a class="navbar-brand">COVID-19 Tracker</a>
         <div class>
-          Developed by
           <a
             type="button"
             href="https://www.linkedin.com/in/tankip/"
