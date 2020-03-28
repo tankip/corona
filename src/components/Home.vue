@@ -75,7 +75,7 @@
           <b-card-text>
             <span class="country-num critical">{{ country.critical ? country.critical : 0 }}</span> are in critial condition
           </b-card-text>
-          <hr />
+         
           <b-card-text>
             <span class="country-num new">{{ country.todayCases ? country.todayCases : 0 }}</span> new cases today
           </b-card-text>
@@ -83,7 +83,7 @@
           <b-card-text>
             <span class="country-num dead">{{ country.todayDeaths ? country.todayDeaths : 0 }}</span> have died today
           </b-card-text>
-          <hr />
+        
           <b-card-text>
             <span
               class="country-num"
@@ -246,7 +246,7 @@ export default {
   font-weight: 800;
 }
 p {
-  margin-bottom: 6px !important;
+  margin-bottom: 0px !important;
 }
 .summary {
   text-align: center;
