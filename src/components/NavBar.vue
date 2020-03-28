@@ -7,7 +7,7 @@
           <a
             type="button"
             href="https://www.linkedin.com/in/tankip/"
-            class="btn btn-dark me"
+            class="btn btn-dark btn-sm me"
             target="_blank"
             title
           >
@@ -22,5 +22,9 @@
 <style>
 .me {
   color: white !important;
+}
+.navbar {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
 }
 </style>
