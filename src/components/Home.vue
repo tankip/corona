@@ -1,22 +1,42 @@
 <template>
   <div id="home">
     <b-card
-      v-if="summary"
-      bg-variant="dark"
-      class="country-search"
-      text-variant="white"
+      v-if="summary.updated"
+      bg-variant="light"
+      class="summary"
+      text-variant="black"
       title="World Summary"
     >
+    <hr />
       <b-card-text>
-        As of
-        <strong>{{ summary.updated ? formatDate(summary.updated) : 0 }}</strong>,
-        <strong class="cases">{{ summary.cases ? summary.cases : 0 }}</strong> total cases have been reported,
-        <strong
-          class="dead"
-        >{{ summary.deaths ? summary.deaths : 0 }}</strong> patients have died and
-        <strong
-          class="recover"
-        >{{ summary.recovered ? summary.recovered : 0 }}</strong> have recovered.
+        <span class="text-center">{{ summary.updated ? formatDate(summary.updated) : 0 }}</span>
+
+        <div class="row">
+          <div class="col-md-6">
+            <pie-chart class="chart" :data="chartData" :options="chartOptions" :styles="myStyles"></pie-chart>
+          </div>
+          <div class="col-md-6 tex-box">
+            <b-card-text class="move-down">
+              As of now
+              <strong class="cases">{{ summary.cases ? summary.cases : 0 }}</strong>
+              total cases have been reported,
+              <strong
+                class="dead"
+              >{{ summary.deaths ? summary.deaths : 0 }}</strong>
+              patients have died and
+              <strong
+                class="recover"
+              >{{ summary.recovered ? summary.recovered : 0 }}</strong> patients have recovered.
+            </b-card-text>
+            <br />
+            <div class="text-center">
+              <b-badge pill variant="dark" class="my-info">Social Distance</b-badge>
+              <b-badge pill variant="dark" class="my-info">Wash Hands</b-badge>
+              <b-badge pill variant="dark" class="my-info">Stay Home</b-badge>
+              <b-badge pill variant="dark" class="my-info">Stay Safe</b-badge>
+            </div>
+          </div>
+        </div>
       </b-card-text>
     </b-card>
     <div class="row">
@@ -55,7 +75,7 @@
           <b-card-text>
             <span class="country-num critical">{{ country.critical ? country.critical : 0 }}</span> are in critial condition
           </b-card-text>
-          <hr>
+          <hr />
           <b-card-text>
             <span class="country-num new">{{ country.todayCases ? country.todayCases : 0 }}</span> new cases today
           </b-card-text>
@@ -63,7 +83,7 @@
           <b-card-text>
             <span class="country-num dead">{{ country.todayDeaths ? country.todayDeaths : 0 }}</span> have died today
           </b-card-text>
-          <hr>
+          <hr />
           <b-card-text>
             <span
               class="country-num"
@@ -84,15 +104,46 @@
 
 <script>
 import axios from "axios";
+import PieChart from "./PieChart.vue";
 export default {
   name: "Home",
+  components: {
+    PieChart
+  },
   data: () => {
     return {
       countries: [],
       summary: {},
       countryName: "",
       error: "",
-      loading: false
+      loading: false,
+      chartOptions: {
+        hoverBorderWidth: 40,
+        responsive: true,
+        maintainAspectRatio: false,
+        cutoutPercentage: 50,
+        animation: {
+          animateRotate: true
+        }
+      },
+      myStyles: {
+        position: "relative",
+        height: "250px",
+        width: "250px",
+        margin: "auto"
+      },
+      chartData: {
+        hoverBackgroundColor: "red",
+        hoverBorderWidth: 20,
+        labels: ["Reported", "Deaths", "Recovered"],
+        datasets: [
+          {
+            label: "Data One",
+            backgroundColor: ["dodgerblue", "red", "limegreen"],
+            data: []
+          }
+        ]
+      }
     };
   },
   mounted() {
@@ -127,6 +178,9 @@ export default {
         .get("https://corona.lmao.ninja/all")
         .then(response => {
           this.summary = response.data;
+          this.chartData.datasets[0].data[0] = this.summary.cases;
+          this.chartData.datasets[0].data[1] = this.summary.deaths;
+          this.chartData.datasets[0].data[2] = this.summary.recovered;
         })
         .catch(() => {});
     }
@@ -150,6 +204,18 @@ export default {
 <style>
 #home {
   margin-top: 16px;
+}
+.my-info {
+  margin-right: 5px;
+}
+@media (max-width: 768px) {
+  .move-down {
+    margin-top: 16px;
+  }
+}
+
+.tex-box {
+  margin: auto;
 }
 .dead {
   color: red;
@@ -182,6 +248,13 @@ export default {
 p {
   margin-bottom: 6px !important;
 }
+.summary {
+  text-align: center;
+  margin-bottom: 16px !important;
+}
+.chart {
+  margin-left: 100px auto;
+}
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
@@ -194,5 +267,11 @@ p {
 
 .country-search {
   margin-bottom: 16px !important;
+}
+.form-control {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  background-color: #e8eaed !important;
+  color: black !important;
 }
 </style>
