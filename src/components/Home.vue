@@ -18,15 +18,15 @@
           <div class="col-md-6 tex-box">
             <b-card-text class="move-down">
               As of now
-              <strong class="cases">{{ summary.cases ? summary.cases : 0 }}</strong>
+              <strong class="cases">{{ summary.cases ? summary.cases.toLocaleString() : 0 }}</strong>
               total cases have been reported,
               <strong
                 class="dead"
-              >{{ summary.deaths ? summary.deaths : 0 }}</strong>
+              >{{ summary.deaths ? summary.deaths.toLocaleString() : 0 }}</strong>
               patients have died and
               <strong
                 class="recover"
-              >{{ summary.recovered ? summary.recovered : 0 }}</strong> patients have recovered.
+              >{{ summary.recovered ? summary.recovered.toLocaleString() : 0 }}</strong> patients have recovered.
             </b-card-text>
             <br />
             <div class="text-center">
@@ -64,35 +64,35 @@
             ></b-avatar>
           </div>
           <b-card-text>
-            <span class="country-num cases">{{ country.cases ? country.cases : 0 }}</span> total cases reported
+            <span class="country-num cases">{{ country.cases ? country.cases.toLocaleString() : 0 }}</span> total cases reported
           </b-card-text>
           <b-card-text>
-            <span class="country-num dead">{{ country.deaths ? country.deaths : 0 }}</span> total dead
+            <span class="country-num dead">{{ country.deaths ? country.deaths.toLocaleString() : 0 }}</span> total dead
           </b-card-text>
           <b-card-text>
-            <span class="country-num recover">{{ country.recovered ? country.recovered : 0 }}</span> patients have recovered
+            <span class="country-num recover">{{ country.recovered ? country.recovered.toLocaleString() : 0 }}</span> patients have recovered
           </b-card-text>
           <b-card-text>
-            <span class="country-num critical">{{ country.critical ? country.critical : 0 }}</span> are in critial condition
+            <span class="country-num critical">{{ country.critical ? country.critical.toLocaleString() : 0 }}</span> are in critial condition
           </b-card-text>
          
           <b-card-text>
-            <span class="country-num new">{{ country.todayCases ? country.todayCases : 0 }}</span> new cases today
+            <span class="country-num new">{{ country.todayCases ? country.todayCases.toLocaleString() : 0 }}</span> new cases today
           </b-card-text>
 
           <b-card-text>
-            <span class="country-num dead">{{ country.todayDeaths ? country.todayDeaths : 0 }}</span> have died today
+            <span class="country-num dead">{{ country.todayDeaths ? country.todayDeaths.toLocaleString() : 0 }}</span> have died today
           </b-card-text>
         
           <b-card-text>
             <span
               class="country-num"
-            >{{ country.casesPerOneMillion ? country.casesPerOneMillion : 0 }}</span> cases per one million
+            >{{ country.casesPerOneMillion ? country.casesPerOneMillion.toLocaleString() : 0 }}</span> cases per one million
           </b-card-text>
           <b-card-text>
             <span
               class="country-num death-per"
-            >{{ country.deathsPerOneMillion ? country.deathsPerOneMillion : 0 }}</span> deaths per one million
+            >{{ country.deathsPerOneMillion ? country.deathsPerOneMillion.toLocaleString() : 0 }}</span> deaths per one million
           </b-card-text>
         </b-card>
       </div>
@@ -163,7 +163,7 @@ export default {
       this.error = "";
       this.loading = true;
       axios
-        .get("https://corona.lmao.ninja/countries?sort=country")
+        .get("https://corona.lmao.ninja/v2/countries?sort=country")
         .then(response => {
           this.loading = false;
           this.countries = response.data.reverse();
@@ -175,7 +175,7 @@ export default {
     },
     getSummary() {
       axios
-        .get("https://corona.lmao.ninja/all")
+        .get("https://corona.lmao.ninja/v2/all")
         .then(response => {
           this.summary = response.data;
           this.chartData.datasets[0].data[0] = this.summary.cases;
